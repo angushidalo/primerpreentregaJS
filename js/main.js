@@ -1,63 +1,73 @@
 
 
-alert("Bienvenidos a Piedra Papel y Tijeras")
-alert("elige tu ataque")
-
-
-
-
+function determinarGanador(opcionUsuario, opcionPC) {
   
+  if (opcionUsuario === opcionPC) {
+    return "Empate";
+  }
   
-  let jugar = true;
-  
-  
-  do {
-
-   let jugador = prompt("elige 1 para Piedra, 2 para Papel y 3 para Tijera");
-     if (jugador == 1){
-      console.log( "usted eligio Piedra")
-     } else if (jugador == 2){
-      console.log( "usted eligio Papel")
-     } else if (jugador == 3) {
-      console.log( "usted eligio Tijera")
-     }
-   let oponente = Math.round(Math.random() * 3);   
-
-   if (oponente == 1){
-    console.log( "la computadora eligió Piedra")
-   } else if (oponente == 2){
-    console.log( "la computadora eligió Papel")
-   } else if (oponente == 3) {
-    console.log( "la computadora eligió Tijera")
-   }
-
-   if (jugador == oponente ){
-      console.log ("empataron")
-   } else if (jugador == 1 && oponente == 3){
-    console.log ("usted ha Ganado")
-   } else if (jugador == 2 && oponente == 1){
-   console.log ("usted ha Ganado")
-   } else if (jugador == 3 && oponente == 2){
-    console.log ("usted ha Ganado")
-   } 
-
-  if (oponente == 1 && jugador == 3){
-    console.log ("la computadora ganó")
-   } else if (oponente == 2 && jugador == 1){
-   console.log ("la computadora ganó")
-   } else if (oponente == 3 && jugador == 2){
-    console.log ("la computadora ganó")
-   }
-
-
-    let respuesta = prompt("¿Quieres seguir jugando? Sí: 1 o No: 2 ");
-  
-   
-    if (respuesta === "2") {
-      
-      jugar = false;
+  if (opcionUsuario === "piedra") {
+    
+    if (opcionPC === "tijera") {
+      return "Ganaste";
     }
-  } while (jugar); 
+    
+    if (opcionPC === "papel") {
+      return "Perdiste";
+    }
+  }
   
- 
-  console.log("Gracias por jugar. Hasta pronto");
+  if (opcionUsuario === "papel") {
+    
+    if (opcionPC === "piedra") {
+      return "Ganaste";
+    }
+    
+    if (opcionPC === "tijera") {
+      return "Perdiste";
+    }
+  }
+  
+  if (opcionUsuario === "tijera") {
+    
+    if (opcionPC === "papel") {
+      return "Ganaste";
+    }
+    
+    if (opcionPC === "piedra") {
+      return "Perdiste";
+    }
+  }
+}
+
+let jugar = true;
+
+while (jugar) {
+  const opciones = ["piedra", "papel", "tijera"];
+
+  console.log("Piedra, papel o tijera");
+
+  for (let i = 0; i < opciones.length; i++) {
+    console.log(i + 1 + ". " + opciones[i]);
+  }
+
+  let opcionUsuario = prompt("Elige una opción: 1, 2 o 3");
+  let opcionPC = Math.floor(Math.random() * opciones.length);
+
+  console.log("Elegiste " + opciones[opcionUsuario - 1]);
+  console.log("La computadora eligió " + opciones[opcionPC]);
+
+  
+  let mensaje = determinarGanador(opciones[opcionUsuario - 1], opciones[opcionPC]);
+  console.log(mensaje);
+
+  let salir = prompt("¿Quieres seguir jugando? S/N");
+
+  if (salir === "N" || salir === "n") {
+    jugar = false;
+    alert("Gracias por jugar");
+  } else if (salir !== "S" && salir !== "s") {
+    jugar = false;
+    alert("Opción inválida");
+  }
+}
