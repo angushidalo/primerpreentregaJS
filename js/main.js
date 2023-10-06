@@ -1,73 +1,61 @@
 
+const piedraOpcion = document.getElementById("piedra");
+const papelOpcion = document.getElementById("papel");
+const tijeraOpcion = document.getElementById("tijera");
 
-function determinarGanador(opcionUsuario, opcionPC) {
-  
-  if (opcionUsuario === opcionPC) {
-    return "Empate";
-  }
-  
-  if (opcionUsuario === "piedra") {
+const resultadoJuego = document.getElementById("resultado");
+
+piedraOpcion.addEventListener("click", () =>{
+    iniciarJuego('piedra');
+});
+
+papelOpcion.addEventListener("click", () =>{
+    iniciarJuego('papel');
+});
+
+tijeraOpcion.addEventListener("click", () =>{
+    iniciarJuego('tijera');
+});
+
+function iniciarJuego(opcion){
+   
+    const movPC = movimientoPc();
     
-    if (opcionPC === "tijera") {
-      return "Ganaste";
-    }
+    const movUsuario = opcion;
     
-    if (opcionPC === "papel") {
-      return "Perdiste";
-    }
-  }
-  
-  if (opcionUsuario === "papel") {
+    const comp = compracion(movPC, movUsuario);
     
-    if (opcionPC === "piedra") {
-      return "Ganaste";
+    if (comp ==1) {
+        resultadoJuego.innerHTML = " usuario elige "+movUsuario + "<br> Pc elige "+ movPC+ "<br> <span class='ganador'>El ganador es usted</span>";
     }
-    
-    if (opcionPC === "tijera") {
-      return "Perdiste";
+    if (comp ==2) {
+        resultadoJuego.innerHTML = " usuario elige "+movUsuario + "<br> Pc elige "+ movPC+ "<br> <span class='perdedor'>El perdedor es usted</span>";
     }
-  }
-  
-  if (opcionUsuario === "tijera") {
-    
-    if (opcionPC === "papel") {
-      return "Ganaste";
+    if (comp ==3) {
+        resultadoJuego.innerHTML = " usuario elige "+movUsuario + "<br> Pc elige "+ movPC+ "<br> <span class='empate'>La partida es un empate</span>";
     }
-    
-    if (opcionPC === "piedra") {
-      return "Perdiste";
-    }
-  }
 }
 
-let jugar = true;
+function movimientoPc(){
+    const opciones = ['piedra', 'papel', 'tijera'];
+    const random = Math.floor(Math.random()*3);
+    const mov = opciones[random];
+    return (mov);
+}
 
-while (jugar) {
-  const opciones = ["piedra", "papel", "tijera"];
-
-  console.log("Piedra, papel o tijera");
-
-  for (let i = 0; i < opciones.length; i++) {
-    console.log(i + 1 + ". " + opciones[i]);
-  }
-
-  let opcionUsuario = prompt("Elige una opción: 1, 2 o 3");
-  let opcionPC = Math.floor(Math.random() * opciones.length);
-
-  console.log("Elegiste " + opciones[opcionUsuario - 1]);
-  console.log("La computadora eligió " + opciones[opcionPC]);
-
-  
-  let mensaje = determinarGanador(opciones[opcionUsuario - 1], opciones[opcionPC]);
-  console.log(mensaje);
-
-  let salir = prompt("¿Quieres seguir jugando? S/N");
-
-  if (salir === "N" || salir === "n") {
-    jugar = false;
-    alert("Gracias por jugar");
-  } else if (salir !== "S" && salir !== "s") {
-    jugar = false;
-    alert("Opción inválida");
-  }
+function compracion(pc, usuario){
+    switch (usuario+pc){
+        case 'piedratijera':
+        case 'papelpiedra':
+        case 'tijerapapel':
+            return 1; 
+        case 'tijerapiedra':
+        case 'piedrapapel':
+        case 'papeltijera':
+            return 2; 
+        case 'papelpapel':
+        case 'piedrapiedra':
+        case 'tijeratijera':
+            return 3; 
+    }
 }

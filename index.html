@@ -2,14 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Primera preentrega</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Juego</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Bienvenidos a Piedra, Papel o Tijeras</h1>
-     <h2> entra a la consola para jugar</h2>
-    
-    <script src="./js/main.js"></script>
+    <header align="center">
+        <h1>Juego de piedra papel o tijera</h1>
+    </header>
+
+    <!--Aqui se va a visualizar el resultado-->
+    <div class="resultado" id="resultado">
+        Vamos a jugar.!
+    </div>
+
+    <div class="opciones">
+        <div class="opcion" id="papel">
+            <img src="./img/boxing-rounded-sticker-paper-cartoon-with-mascot-vector-27232920.jpg" alt="">
+        </div>
+
+        <div class="opcion" id="piedra">
+            <img src="img/dibujos-animados-divertido-lindo-personaje-monstruo-piedra_6317-3027.jpg" alt="">
+        </div>
+
+        <div class="opcion" id="tijera">
+            <img src="img/angry-scissors-cartoon-vector-illustration-49122109.jpg" alt="">
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
