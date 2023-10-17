@@ -1,150 +1,112 @@
 
-let score = 0; 
-let highscore = 0; 
+let puntosUsuario = localStorage.getItem("puntosUsuario") || 0;
+let puntosPC = localStorage.getItem("puntosPC") || 0;
 
+let instrucciones = document.querySelector("#instrucciones");
+let contenedorPuntosUsuario = document.querySelector("#puntos-usuario");
+let contenedorPuntosPC = document.querySelector("#puntos-computadora");
+let mensaje = document.querySelector("#mensaje");
+let contenedorGanaPunto = document.querySelector("#gana-punto");
+let elegiTuArma = document.querySelector("#elegi-tu-arma");
 
-const piedraOpcion = document.getElementById("piedra");
-const papelOpcion = document.getElementById("papel");
-const tijeraOpcion = document.getElementById("tijera");
-const resultadoJuego = document.getElementById("resultado");
-const puntajeElemento = document.getElementById("puntaje");
-const recordElemento = document.getElementById("record");
+let contenedorEleccionUsuario = document.querySelector("#eleccion-usuario");
+let contenedorEleccionPC = document.querySelector("#eleccion-computadora");
 
+let botonesArmas = document.querySelectorAll(".arma");
+botonesArmas.forEach(boton => {
+    boton.addEventListener("click", iniciarTurno);
+});
 
-window.onload = function () {
-
-  let storedHighscore = localStorage.getItem("highscore");
-
-  if (storedHighscore) {
-    highscore = parseInt(storedHighscore);
-  }
-  
-  else {
-    highscore = 0;
-  }
-  
-  puntajeElemento.innerHTML = score;
-  recordElemento.innerHTML = highscore;
- 
-  fetch("niveles.json")
-    .then((response) => response.json())
-    .then((data) => {
-      
-      this.niveles = data.niveles;
-      
-      this.iniciarNivel(0);
-    });
-};
-
-
-piedraOpcion.addEventListener("click", () => iniciarJuego("piedra"));
-papelOpcion.addEventListener("click", () => iniciarJuego("papel"));
-tijeraOpcion.addEventListener("click", () => iniciarJuego("tijera"));
-
-
-function iniciarJuego(opcion) {
-  
-  const movPC = movimientoPc();
-  
-  const movUsuario = opcion;
- 
-  const comp = compracion(movPC, movUsuario);
-  
-  if (comp == 1) {
-    resultadoJuego.innerHTML =
-      " usuario elige " +
-      movUsuario +
-      "<br> Pc elige " +
-      movPC +
-      "<br> <span class='ganador'>El ganador es usted</span>";
-   
-    score++;
-   
-    if (score > highscore) {
-     
-      highscore = score;
+function iniciarTurno(e) {
     
-      localStorage.setItem("highscore", highscore);
+    let eleccionPC = Math.floor(Math.random() * 3);
+    let eleccionUsuario = e.currentTarget.id;
+
+
+    if (eleccionPC === 0) {
+        eleccionPC = "piedra🪨";
+    } else if (eleccionPC === 1) {
+        eleccionPC = "papel📋"
+    } else if (eleccionPC === 2) {
+        eleccionPC = "tijera✂️"
     }
+
     
-    this.estrellasObtenidas++;
-    
-    if (this.estrellasObtenidas == this.estrellasRequeridas) {
-      
-      this.indiceNivel++;
-      
-      this.iniciarNivel(this.indiceNivel);
+    if (
+        (eleccionUsuario === "piedra🪨" && eleccionPC === "tijera✂️") ||
+        (eleccionUsuario === "tijera✂️" && eleccionPC === "papel📋") ||
+        (eleccionUsuario === "papel📋" && eleccionPC === "piedra🪨")
+    ) {
+        ganaUsuario();
+    } else if (
+        (eleccionPC === "piedra🪨" && eleccionUsuario === "tijera✂️") ||
+        (eleccionPC === "tijera✂️" && eleccionUsuario === "papel📋") ||
+        (eleccionPC === "papel📋" && eleccionUsuario === "piedra🪨")
+    ) {
+        ganaPC();
+    } else {
+        empate();
     }
-  }
-  if (comp == 2) {
-    resultadoJuego.innerHTML =
-      " usuario elige " +
-      movUsuario +
-      "<br> Pc elige " +
-      movPC +
-      "<br> <span class='perdedor'>El perdedor es usted</span>";
-  }
-  if (comp == 3) {
-    resultadoJuego.innerHTML =
-      " usuario elige " +
-      movUsuario +
-      "<br> Pc elige " +
-      movPC +
-      "<br> <span class='empate'>La partida es un empate</span>";
-  }
- 
-  puntajeElemento.innerHTML = score;
-  recordElemento.innerHTML = highscore;
+
+    mensaje.classList.remove("disabled");
+    contenedorEleccionUsuario.innerText = eleccionUsuario;
+    contenedorEleccionPC.innerText = eleccionPC;
+
+    if (puntosUsuario === 5 || puntosPC === 5) {
+
+        if (puntosUsuario === 5) {
+            instrucciones.innerText = "🔥 ¡Ganaste el juego! 🔥"
+        }
+
+        if (puntosPC === 5) {
+            instrucciones.innerText = "😭 ¡La computadora ganó el juego! 😭"
+        }
+
+        elegiTuArma.classList.add("disabled");
+        reiniciar.classList.remove("disabled");
+        reiniciar.addEventListener("click", reiniciarJuego);
+    }
+
+
 }
 
-
-function movimientoPc() {
-  const opciones = ["piedra", "papel", "tijera"];
-  const random = Math.floor(Math.random() * 3);
-  const mov = opciones[random];
-  return mov;
+function ganaUsuario() {
+    puntosUsuario++;
+    contenedorPuntosUsuario.innerText = puntosUsuario;
+    contenedorGanaPunto.innerText = "¡Ganaste un punto! 🔥"
+    
+    
+    localStorage.setItem("puntosUsuario", puntosUsuario);
 }
 
-
-function compracion(pc, usuario) {
-  switch (usuario + pc) {
-    case "piedratijera":
-    case "papelpiedra":
-    case "tijerapapel":
-      return 1;
-    case "tijerapiedra":
-    case "piedrapapel":
-    case "papeltijera":
-      return 2;
-    case "papelpapel":
-    case "piedrapiedra":
-    case "tijeratijera":
-      return 3;
-  }
-}
-
-
-function iniciarNivel(indice) {
- 
-  const nivel = this.niveles[indice];
-  
-  nivel.cajas.forEach((cajaData) => {
+function ganaPC() {
+    puntosPC++;
+    contenedorPuntosPC.innerText = puntosPC;
+    contenedorGanaPunto.innerText = "¡La computadora ganó un punto! 😭"
+    
    
-    const caja = new Caja(cajaData);
+    localStorage.setItem("puntosPC", puntosPC);
+}
+
+function empate() {
+    contenedorGanaPunto.innerText = "¡Empate! 😱"
+}
+
+function reiniciarJuego() {
+    reiniciar.classList.add("disabled");
+    elegiTuArma.classList.remove("disabled");
+    mensaje.classList.add("disabled");
+
+    puntosUsuario = 0;
+    puntosPC = 0;
+    
    
-    this.stage.addChild(caja.el);
+    localStorage.removeItem("puntosUsuario");
+    localStorage.removeItem("puntosPC");
+
     
-    this.cajas.push(caja);
-  });
-  
-  nivel.estrellas.forEach((estrellaData) => {
-    
-    const estrella = new Estrella(estrellaData);
-    
-    this.stage.addChild(estrella.el);
-    
-    this.estrellas.push(estrella);
-  });
-  
-  this.estrellasRequeridas = nivel.estrellas_requeridas;
+    contenedorPuntosUsuario.innerText = puntosUsuario;
+    contenedorPuntosPC.innerText = puntosPC;
+
+    instrucciones.innerText = "El primero en llegar a 5 puntos gana."
 }

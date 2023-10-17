@@ -1,39 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Piedra, papel o tijera</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <header align="center">
-        <h1>Juego de piedra papel o tijera</h1>
+
+    <header>
+        <h1>Piedra, papel o tijera</h1>
+        <p>con HTML, CSS y JavaScript</p>
     </header>
-
-    
-    <div class="resultado" id="resultado">
-        Vamos a jugar.!
-    </div>
-
-    <p>Puntaje: <span id="puntaje"></span></p>
-    <p>Récord: <span id="record"></span></p>
-
-    <div class="opciones">
-        <div class="opcion" id="papel">
-            <img src="./img/boxing-rounded-sticker-paper-cartoon-with-mascot-vector-27232920.jpg" alt="">
+    <main>
+        <p class="instrucciones" id="instrucciones">
+            El primero en llegar a 5 puntos gana.
+        </p>
+        <div class="marcador">
+            <p class="nombre nombre-jugador">Jugador</p>
+            <p class="nombre nombre-computadora">Computadora</p>
+            <p class="puntos">
+                <span id="puntos-usuario">0</span>
+                <span>-</span>
+                <span id="puntos-computadora">0</span>
+            </p>
         </div>
-
-        <div class="opcion" id="piedra">
-            <img src="img/dibujos-animados-divertido-lindo-personaje-monstruo-piedra_6317-3027.jpg" alt="">
+        <div class="elegi-tu-arma" id="elegi-tu-arma">
+            <h2>Elegí tu arma para el próximo turno</h2>
+            <div class="armas">
+                <button class="arma" id="piedra🪨">🪨</button>
+                <button class="arma" id="papel📋">📋</button>
+                <button class="arma" id="tijera✂️">✂️</button>
+            </div>
         </div>
-
-        <div class="opcion" id="tijera">
-            <img src="img/angry-scissors-cartoon-vector-illustration-49122109.jpg" alt="">
+        <div class="mensaje disabled" id="mensaje">
+            <p>
+                Usaste <span class="eleccion" id="eleccion-usuario">papel📋</span><br>
+                y la computadora usó <span class="eleccion" id="eleccion-computadora">piedra🪨</span>
+            </p>
+            <p id="gana-punto">¡Ganaste un punto! 🔥</p>
         </div>
-    </div>
+        <button class="btn disabled" id="reiniciar">Reiniciar juego</button>
+    </main>
 
-    <script src="js/main.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>
